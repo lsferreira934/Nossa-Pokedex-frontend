@@ -1,4 +1,6 @@
 function showModal(message) {
+    const modalDate = { close: false, ...message };
+
     const hasModal = document.getElementById('showModal');
 
     if (!hasModal) {
@@ -6,14 +8,16 @@ function showModal(message) {
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">${message.title}</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <h5 class="modal-title">${modalDate.title}</h5>
+                                        ${modalDate.close ? '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>' : ''}
                                     </div>
                                     <div class="modal-body">
-                                        <p>${message.message}</p>
+                                        <p>${modalDate.message}</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" onclick="window.location.href = '${message.redirect}'">${message.button}</button>
+                                       ${!!modalDate.redirect ?
+                `<button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" onclick="window.location.href = '${modalDate.redirect}'">${modalDate.button}</button>`
+                : `<button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">${modalDate.button}</button>`} 
                                     </div>
                                 </div>
                             </div>
@@ -26,27 +30,20 @@ function showModal(message) {
         const modal = new bootstrap.Modal(hasModal);
         modal.toggle();
 
-        setTimeout(() => {
-            modal.hide();
-        }, 5000);
     } else {
         const modal = new bootstrap.Modal(hasModal);
         modal.toggle();
-
-        setTimeout(() => {
-            modal.hide();
-        }, 5000);
     };
 };
 
 function showToast(message) {
-    const hasToast = document.getElementById('showToast ');
+    const hasToast = document.getElementById('showToast');
 
     if (!hasToast) {
-        const newToast = `<div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+        const newToast = `<div class="p-3" style="z-index: 999; position: fixed; bottom: 0; right: 0;">
                             <div id="showToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
                                 <div class="toast-header">
-                                    <img src="https://imagensemoldes.com.br/wp-content/uploads/2020/04/Pokebola-Pok%C3%A9mon-PNG-1024x1022.png" width="16" height="16" class="rounded me-2" alt="...">
+                                    <img src="${message.img}" width="16" height="16" class="rounded me-2" alt="...">
                                     <strong class="ml-2 me-auto">${message.title}</strong>
                                     <small class="text-muted">11 mins ago</small>
                                     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -56,6 +53,8 @@ function showToast(message) {
                                 </div>
                             </div>
                         </div>`;
+
+        if(!!message.redirect) window.location.href = message.redirect;
 
         const body = document.querySelector('body');
         body.innerHTML += newToast;
