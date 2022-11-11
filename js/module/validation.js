@@ -107,3 +107,4 @@ function resetValidateInputs(inputs) {
 
 
 
+export { validateInputs, validatePassword, resetValidateInputs}

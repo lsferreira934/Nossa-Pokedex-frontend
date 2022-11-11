@@ -12,3 +12,5 @@ function getInputs(inputs, startValues = {}) {
 
     return sendValues;
 }
+
+export { getInputs }

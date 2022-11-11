@@ -1,3 +1,9 @@
+import { showModal } from './module/modal.js'
+import { getInputs } from './module/utilities.js'
+import { setLocalStorage, getLocalStorage, removeLocalStorage } from './module/localStorage.js'
+import { validateInputs, resetValidateInputs, validatePassword } from './module/validation.js'
+import { post } from '../api/index.js'
+
 async function signup(inputs) {
     try {
         const sendValues = getInputs(inputs);
@@ -76,4 +82,17 @@ async function logoff() {
         console.log(error);
     };
 }
+
+
+window.addEventListener('load', () =>{
+    const btLogin = document.querySelector('#bt-login');
+    const btSignup = document.querySelector('#bt-signup');
+    
+    if(!!btLogin) btLogin.addEventListener('click', () => login(['#email', '#password']));
+    if(!!btSignup) btSignup.addEventListener('click', () => validateInputs(['.validate-name','.validate-email','.validate-password','.validate-repite-password' ], [signup(['#name', '#email', '#password'])]));
+
+    validatePassword(['.validate-password', '.validate-repite-password']);
+    resetValidateInputs(['.validate-name', '.validate-email']);
+})
+
 
